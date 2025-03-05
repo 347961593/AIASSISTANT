@@ -1,0 +1,66 @@
+<template>
+  <ChatStyle title="安院长智能助手">
+    <img :src="hi" class="hi_img" alt="" />
+    <div class="tip">— 你可以这样问我 —</div>
+    <div class="list">
+      <div class="item">
+        <img :src="question" alt="" />
+        有没有什么课程推荐
+      </div>
+      <div class="item">
+        <img :src="question" alt="" />
+        怎样才能获取更多的课本知识
+      </div>
+      <div class="item">
+        <img :src="question" alt="" />
+        学习有什么技巧
+      </div>
+    </div>
+  </ChatStyle>
+</template>
+
+<script setup>
+import ChatStyle from "@comp/chatStyle.vue";
+import hi from "@assets/imgs/hi.png";
+import question from "@assets/imgs/question.png";
+</script>
+
+<style lang="scss" scoped>
+.hi_img {
+  width: 100%;
+}
+.tip {
+  font-size: 0.875rem;
+  color: $gray2;
+  text-align: center;
+  margin-bottom: 15px;
+}
+.list {
+  .item {
+    width: max-content;
+    padding-right: 40px;
+    height: 33px;
+    background-image: linear-gradient(180deg, #fff, #effcff),
+      linear-gradient(#fff, #fff);
+    background-blend-mode: normal, normal;
+    box-shadow: 2px 5px 10px #fee1db78;
+    border-radius: 33px;
+    overflow: hidden;
+    font-size: 14px;
+    font-weight: 400;
+    font-stretch: normal;
+    letter-spacing: 1px;
+    color: #352928;
+    padding-left: 17px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 13px;
+    cursor: pointer;
+    img {
+      width: 1rem;
+      height: 1rem;
+      margin-right: 10px;
+    }
+  }
+}
+</style>
