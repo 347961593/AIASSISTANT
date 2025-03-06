@@ -71,6 +71,7 @@ import question from "@assets/imgs/question.png";
 }
 @media (min-width: 720px) {
   .home {
+    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
