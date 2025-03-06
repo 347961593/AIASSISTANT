@@ -1,19 +1,23 @@
 <template>
   <ChatStyle title="安院长智能助手">
-    <img :src="hi" class="hi_img" alt="" />
-    <div class="tip">— 你可以这样问我 —</div>
-    <div class="list">
-      <div class="item">
-        <img :src="question" alt="" />
-        有没有什么课程推荐
-      </div>
-      <div class="item">
-        <img :src="question" alt="" />
-        怎样才能获取更多的课本知识
-      </div>
-      <div class="item">
-        <img :src="question" alt="" />
-        学习有什么技巧
+    <div class="home">
+      <span><img :src="hi" class="hi_img" alt="" /></span>
+      <div>
+        <div class="tip">— 你可以这样问我 —</div>
+        <div class="list">
+          <div class="item">
+            <img :src="question" alt="" />
+            有没有什么课程推荐
+          </div>
+          <div class="item">
+            <img :src="question" alt="" />
+            怎样才能获取更多的课本知识
+          </div>
+          <div class="item">
+            <img :src="question" alt="" />
+            学习有什么技巧
+          </div>
+        </div>
       </div>
     </div>
   </ChatStyle>
@@ -28,6 +32,8 @@ import question from "@assets/imgs/question.png";
 <style lang="scss" scoped>
 .hi_img {
   width: 100%;
+  max-width: 400px;
+  text-align: center;
 }
 .tip {
   font-size: 0.875rem;
@@ -61,6 +67,14 @@ import question from "@assets/imgs/question.png";
       height: 1rem;
       margin-right: 10px;
     }
+  }
+}
+@media (min-width: 720px) {
+  .home {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
   }
 }
 </style>

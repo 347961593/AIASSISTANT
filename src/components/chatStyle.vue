@@ -1,37 +1,50 @@
 <template>
-  <section class="container">
-    <header>
-      <div class="imgs">
-        <img :src="history" class="header_img" alt="" />
-        <img :src="newChat" class="header_img" alt="" />
-      </div>
-      <span>{{ title }}</span>
-    </header>
-    <main>
-      <slot></slot>
-    </main>
-  </section>
-  <div class="input">
-    <div class="change-bot">
-      <div class="bot-list show">
-        <div class="item current">DeepSeek-V3</div>
-        <div class="item">DeepSeek-R1</div>
-      </div>
-      <div class="current-bot">
-        DeepSeek-V3
-        <img :src="top" alt="" />
+  <div class="container">
+    <historyList :show="historyListShow" @close="listShow"></historyList>
+    <div class="chat">
+      <section class="chat-container">
+        <header>
+          <div class="imgs">
+            <img
+              :src="history"
+              class="header_img"
+              alt=""
+              @click="listShow(true)"
+            />
+            <img :src="newChat" class="header_img" alt="" />
+          </div>
+          <span>{{ title }}</span>
+        </header>
+        <main>
+          <slot></slot>
+        </main>
+      </section>
+      <div class="input">
+        <div class="change-bot">
+          <!-- <div class="bot-list show">
+            <div class="item current">DeepSeek-V3</div>
+            <div class="item">DeepSeek-R1</div>
+          </div> -->
+          <div class="current-bot">
+            DeepSeek-V3
+            <img :src="top" alt="" />
+          </div>
+        </div>
+        <el-input v-model="input" placeholder="有什么问题都可以问我">
+          <template #suffix>
+            <img :src="voice" class="header_img" alt="" />
+          </template>
+        </el-input>
+        <div class="tip">
+          内容由<span class="warning">AI生成</span>，请仔细甄别
+        </div>
       </div>
     </div>
-    <el-input v-model="input" placeholder="有什么问题都可以问我">
-      <template #suffix>
-        <img :src="voice" class="header_img" alt="" />
-      </template>
-    </el-input>
-    <div class="tip">内容由<span class="warning">AI生成</span>，请仔细甄别</div>
   </div>
 </template>
 <script setup>
 import { defineProps, ref } from "vue";
+import historyList from "./historyList.vue";
 import history from "@assets/imgs/history.png";
 import newChat from "@assets/imgs/newChat.png";
 import voice from "@assets/imgs/voice.png";
@@ -44,12 +57,32 @@ const props = defineProps({
 });
 const input = ref("");
 const model = ref("");
+const historyListShow = ref(false);
+function listShow(show) {
+  historyListShow.value = show;
+}
 </script>
 <style lang="scss" scoped>
 .container {
+  height: 100%;
+  display: flex;
+  & > :first-child {
+    flex: 3;
+  }
+}
+.chat {
+  flex: 1;
+  overflow: hidden;
+  height: 100%;
+  position: relative;
+  max-width: 1080px;
+  margin: auto;
+}
+.chat-container {
   display: flex;
   flex-direction: column;
-  height: 100%;
+  height: calc(100% - 100px);
+  min-width: 265px;
   > header {
     height: 3.75rem;
     line-height: 3.75rem;
@@ -71,12 +104,16 @@ const model = ref("");
   > main {
     flex-grow: 1;
     padding: 20px;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
   }
 }
 .input {
   width: calc(100% - 20px);
   margin: auto;
-  position: fixed;
+  position: absolute;
   bottom: 0.5rem;
   left: 10px;
   .change-bot {
