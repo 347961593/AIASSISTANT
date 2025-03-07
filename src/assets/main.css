@@ -1,5 +1,8 @@
 @import './css/base.css';
 
+.el-message{
+  z-index: 9999!important;
+}
 /* #app {
   max-width: 1280px;
   font-weight: normal;

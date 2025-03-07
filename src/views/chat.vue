@@ -1,5 +1,5 @@
 <template>
-  <ChatStyle title="安院长智能助手">
+  <ChatStyle title="安院长智能助手" ref="chatStyleComp">
     <div class="user">
       <div class="usertext">怎样才能获取更多的课本知识</div>
     </div>
@@ -157,10 +157,30 @@
 
 <script setup>
 import ChatStyle from "@comp/chatStyle.vue";
+import { ref } from "vue";
 import down from "@assets/imgs/down.png";
 import play from "@assets/imgs/play.png";
 import reload from "@assets/imgs/reload.png";
 import copy from "@assets/imgs/copy.png";
+import { post } from "@/api";
+
+async function createChat() {
+  const { code, data } = await post("/coze/v1/conversation/create", {
+    conversation_id: id,
+  });
+  if (code == 200) {
+  } 
+}
+async function getChatlist(id) {
+  const { code, data } = await post("member/chatlist", {
+    conversation_id: id,
+  });
+  if (code == 200) {
+  } 
+}
+const chatStyleComp = ref(null);
+console.log('111',chatStyleComp);
+
 </script>
 
 <style lang="scss" scoped>

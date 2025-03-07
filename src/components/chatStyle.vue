@@ -30,7 +30,6 @@
             >
               {{ item.title }}
             </div>
-            <!-- <div class="item current">DeepSeek-R1</div> -->
           </div>
           <div class="current-bot" @click="agentlistShowChange">
             {{ agent.title }}

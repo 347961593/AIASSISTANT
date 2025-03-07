@@ -8,6 +8,8 @@ class Request {
     // 请求拦截
     request.use(
       (config) => {
+        console.log(config);
+        
         let token = localStorage.getItem("token");
         if (token) config.headers.token = token;
         return config;

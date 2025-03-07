@@ -3,7 +3,7 @@ import Request from "./base";
 const request = new Request({
   baseURL: "/api",
   // timeout: 20000,
-  showLoading: true,
+  // showLoading: true,
 });
 
 // 绑定组件实例，抽离方法

@@ -38,6 +38,11 @@ export default defineConfig({
         target: "http://agent.hebeirongshi.com",
         changeOrigin: true,
       },
+      "/coze": {
+        target: "https://api.coze.cn",
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/coze/, ""),
+      }
     },
   },
 });
