@@ -2,18 +2,14 @@ import axios from "axios";
 
 class Request {
   instance;
-
   constructor(config) {
     this.instance = axios.create(config);
-
     const { request, response } = this.instance.interceptors;
-
     // 请求拦截
     request.use(
       (config) => {
-        config.headers = {
-          "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJzb2wiLCJleHAiOjE3NDE2ODMzODcsImF1ZCI6InVzZXIiLCJuYmYiOjE3NDEwNzg1ODcsImlhdCI6MTc0MTA3ODU4NywidWlkIjo0LCJ1c2VyIjp0cnVlfQ.Z2CperBCnfkjqTDx94UfgDRxqloD9kNTwksoj1j4E18",
-        };
+        let token = localStorage.getItem("token");
+        if (token) config.headers.token = token;
         return config;
       },
       (err) => {

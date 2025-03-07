@@ -8,13 +8,19 @@
 
 <script setup>
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 import { post } from "@/api";
 import hi from "@assets/imgs/hi.png";
+import { useTokenStore } from "@stores";
+
 const phoneNum = ref("");
+const router = useRouter();
 async function Login() {
   const { code, data } = await post("/login/login", { phone: phoneNum.value });
   if (code == 200) {
-    console.log(data);
+    // useTokenStore(data);
+    localStorage.setItem("token", data.token);
+    router.push("/home");
   } else {
     console.log(data);
   }

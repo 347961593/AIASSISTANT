@@ -21,12 +21,19 @@
       </section>
       <div class="input">
         <div class="change-bot">
-          <!-- <div class="bot-list show">
-            <div class="item current">DeepSeek-V3</div>
-            <div class="item">DeepSeek-R1</div>
-          </div> -->
-          <div class="current-bot">
-            DeepSeek-V3
+          <div class="bot-list" v-show="agentlistShow">
+            <div
+              :class="`item ${item.id == agent.id ? 'current' : ''}`"
+              v-for="item in agentlist"
+              :key="item.id"
+              @click="changeAgent(item)"
+            >
+              {{ item.title }}
+            </div>
+            <!-- <div class="item current">DeepSeek-R1</div> -->
+          </div>
+          <div class="current-bot" @click="agentlistShowChange">
+            {{ agent.title }}
             <img :src="top" alt="" />
           </div>
         </div>
@@ -43,24 +50,46 @@
   </div>
 </template>
 <script setup>
-import { defineProps, ref } from "vue";
+import { defineProps, reactive, ref } from "vue";
+import { post } from "@/api";
 import historyList from "./historyList.vue";
 import history from "@assets/imgs/history.png";
 import newChat from "@assets/imgs/newChat.png";
 import voice from "@assets/imgs/voice.png";
 import top from "@assets/imgs/top.png";
+
 const props = defineProps({
   title: {
     type: String,
     default: "",
   },
 });
+
 const input = ref("");
 const model = ref("");
 const historyListShow = ref(false);
 function listShow(show) {
   historyListShow.value = show;
 }
+
+const agentlistShow = ref(false);
+let agent = {};
+const agentlist = ref([]);
+function agentlistShowChange() {
+  agentlistShow.value = !agentlistShow.value;
+}
+function changeAgent(item) {
+  agent = item;
+  agentlistShow.value = false;
+}
+async function getAgentlist() {
+  const { code, data } = await post("index/getAgentlist");
+  if (code == 200) {
+    agent = data[0];
+    agentlist.value = data;
+  }
+}
+getAgentlist();
 </script>
 <style lang="scss" scoped>
 .container {
@@ -82,7 +111,7 @@ function listShow(show) {
   display: flex;
   flex-direction: column;
   height: calc(100% - 100px);
-  min-width: 265px;
+  min-width: 50vh;
   > header {
     height: 3.75rem;
     line-height: 3.75rem;
@@ -112,6 +141,7 @@ function listShow(show) {
 }
 .input {
   width: calc(100% - 20px);
+  min-width: 50vh;
   margin: auto;
   position: absolute;
   bottom: 0.5rem;
@@ -122,9 +152,6 @@ function listShow(show) {
     margin-bottom: 0.5rem;
     background-size: contain;
     position: relative;
-    .bot-list.show {
-      height: max-content;
-    }
     .bot-list {
       width: 195px;
       height: max-content;

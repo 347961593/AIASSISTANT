@@ -17,7 +17,7 @@ export default defineConfig({
       "@router": path.resolve(__dirname, "src/router"),
       "@api": path.resolve(__dirname, "src/api"),
       "@utils": path.resolve(__dirname, "src/utils"),
-      "@store": path.resolve(__dirname, "src/store"),
+      "@stores": path.resolve(__dirname, "src/stores"),
       "@assets": path.resolve(__dirname, "src/assets"),
     },
   },
@@ -37,10 +37,6 @@ export default defineConfig({
       "/api": {
         target: "http://agent.hebeirongshi.com",
         changeOrigin: true,
-        // headers: {
-        //   // 确保所有请求头都能正确传递
-        //   "Access-Control-Allow-Headers": "Content-Type, Authorization, token",
-        // },
       },
     },
   },

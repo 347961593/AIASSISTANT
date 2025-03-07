@@ -5,17 +5,13 @@
       <div>
         <div class="tip">— 你可以这样问我 —</div>
         <div class="list">
-          <div class="item">
+          <div
+            class="item"
+            v-for="item in recommendQuestionList"
+            :key="item.id"
+          >
             <img :src="question" alt="" />
-            有没有什么课程推荐
-          </div>
-          <div class="item">
-            <img :src="question" alt="" />
-            怎样才能获取更多的课本知识
-          </div>
-          <div class="item">
-            <img :src="question" alt="" />
-            学习有什么技巧
+            {{ item.title }}
           </div>
         </div>
       </div>
@@ -27,6 +23,17 @@
 import ChatStyle from "@comp/chatStyle.vue";
 import hi from "@assets/imgs/hi.png";
 import question from "@assets/imgs/question.png";
+import { post } from "@/api";
+import { ref } from "vue";
+
+const recommendQuestionList = ref([]);
+async function recommendQuestion() {
+  const { code, data } = await post("/login/recommendQuestion");
+  if (code == 200) {
+    recommendQuestionList.value = data.list;
+  }
+}
+recommendQuestion();
 </script>
 
 <style lang="scss" scoped>
