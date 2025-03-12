@@ -113,6 +113,8 @@ import top from "@assets/imgs/top.png";
 import {
   resultText,
   resultTextTemp,
+  toBase64,
+  iatWS,
   recorder,
   connectWebSocket,
 } from "@utils/iat.js";
@@ -189,7 +191,7 @@ async function requestMicrophonePermission() {
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     console.log("允许使用麦克风");
-    
+
     return stream;
   } catch (error) {
     if (error.name === "NotAllowedError") {
@@ -202,7 +204,7 @@ async function requestMicrophonePermission() {
 }
 
 const startVoiceInput = () => {
-  requestMicrophonePermission()
+  requestMicrophonePermission();
   console.log("开始录音~~~~~~~~~~~~~~~~~~~~~~");
 
   isListening.value = true;
@@ -217,7 +219,7 @@ const startVoiceInput = () => {
 // 停止语音输入
 const stopVoiceInput = () => {
   console.log("停止录音~~~~~~~~~~~~~~~~~~~~~~");
-  recorder.onStop()
+  recorder.onStop();
   if (isListening.value) {
     isListening.value = false;
 
@@ -235,6 +237,36 @@ const stopVoiceInput = () => {
     }
   }
 };
+
+onMounted(() => {
+  // recorder = new RecorderManager("public/js/xf"); // processor.worker.js和processor.worklet.js的根目录（注意: 这里的路径是相对于index.html的，而不是相对于本vue）
+  recorder.onStart = () => {
+    console.log("监听录音开始事件");
+  };
+  recorder.onFrameRecorded = ({ isLastFrame, frameBuffer }) => {
+    if (iatWS.readyState === iatWS.OPEN) {
+      iatWS.send(
+        JSON.stringify({
+          data: {
+            status: isLastFrame ? 2 : 1,
+            // status: 1,
+            format: "audio/L16;rate=16000",
+            encoding: "raw",
+            audio: toBase64(frameBuffer),
+          },
+        })
+      );
+      if (isLastFrame) {
+        console.log("最后一帧已发送");
+      }
+    }
+  };
+
+  recorder.onStop = () => {
+    console.log("监听录音结束事件");
+    //   recorder.stop();
+  };
+});
 </script>
 <style lang="scss" scoped>
 .container {
@@ -383,7 +415,7 @@ const stopVoiceInput = () => {
           font-stretch: normal;
           letter-spacing: 1px;
           color: #333;
-          outline:medium;
+          outline: medium;
         }
         > p {
           width: 20px;

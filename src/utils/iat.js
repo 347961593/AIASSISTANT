@@ -1,8 +1,7 @@
-import "../utils/crypto/crypto-js";
-// import CryptoJS from "crypto-js";
+import CryptoJS from "crypto-js";
 import "../utils/processor/index.umd.js";
 
-const recorder = new RecorderManager("../processor");
+const recorder = new RecorderManager("src/utils/processor");
 
 let iatWS;
 let resultText = "";
@@ -120,36 +119,11 @@ function renderResult(resultData) {
   }
 }
 
-recorder.onStart = () => {
-  console.log("监听录音开始事件");
+export {
+  resultText,
+  resultTextTemp,
+  toBase64,
+  iatWS,
+  recorder,
+  connectWebSocket,
 };
-
-recorder.onStop = () => {
-  console.log("监听录音结束事件");
-  recorder.stop();
-};
-
-//TODO 不调取
-recorder.onFrameRecorded = ({ isLastFrame, frameBuffer }) => {
-  console.log("onFrameRecorded");
-
-  if (iatWS && iatWS.readyState === iatWS.OPEN) {
-    iatWS.send(
-      JSON.stringify({
-        data: {
-          status: isLastFrame ? 2 : 1,
-          format: "audio/L16;rate=16000",
-          encoding: "raw",
-          audio: toBase64(frameBuffer),
-        },
-      })
-    );
-    if (isLastFrame) {
-      console.log("最后一帧已发送");
-    }
-  } else {
-    console.warn("WebSocket 未连接或已关闭");
-  }
-};
-
-export { resultText, resultTextTemp, recorder, connectWebSocket };
